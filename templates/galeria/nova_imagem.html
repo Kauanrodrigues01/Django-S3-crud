@@ -1,0 +1,24 @@
+{% extends 'galeria/base.html' %}
+{% load static %}
+{% block content %}
+            <section class="galeria" style="margin-left: 5rem;">
+                <form action="{% url 'nova_imagem' %}" method="POST" enctype="multipart/form-data"> <!--  -->
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for field in form.visible_fields %}
+                        <div class="col-12 col-lg-12" style="margin-bottom: 10px;">
+                            <label for="{{ field.id_for_label }}" style="color:#D9D9D9; margin-bottom: 5px;"><b>{{ field.label }}</b></label>
+                            <br>
+                            {{ field }} <!-- Aqui estamos renderizando o campo do formulário, e podemos estilizar nas proprias class de forms -->
+                        </div>
+                        {% endfor %}
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-success col-12" style="padding-top: 5px;margin-bottom: 50px;">Adicionar Imagem</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+{% endblock %}
