@@ -401,6 +401,11 @@ table {
     display: flex;
 }
 
+.tags__lista > a {
+    color: #D9D9D9;
+    text-decoration: none;
+}
+
 .tags__tag {
     background-color: #D9D9D930;
     margin-right: 1.5rem;
@@ -414,11 +419,6 @@ table {
 .tags__tag:hover {
     border: 2px solid #7B78E5;
     cursor: pointer;
-}
-
-.tags__tag > a {
-    color: #D9D9D9;
-    text-decoration: none;
 }
 
 .alert {

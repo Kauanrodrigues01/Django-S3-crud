@@ -27,6 +27,7 @@ class Imagem(models.Model):
         blank=False,
         related_name='user',
     )
+    favoritada = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nome

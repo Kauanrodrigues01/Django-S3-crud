@@ -77,3 +77,17 @@ def deletar_imagem(resquest, imagem_id):
     imagem = get_object_or_404(Imagem, pk=imagem_id)
     imagem.delete()
     return redirect('index')
+
+def favoritar_imagem(request, imagem_id):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Você precisa estar logado para acessar essa página')
+        return redirect('login')
+    
+    imagem = get_object_or_404(Imagem, pk=imagem_id)
+    if imagem.favoritada:
+        imagem.favoritada = False
+    else:
+        imagem.favoritada = True
+        
+    imagem.save()
+    return redirect('index')

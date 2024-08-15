@@ -9,10 +9,10 @@
                 <section class="tags">
                     <p class="tags__titulo">Busque por tags:</p>
                     <ul class="tags__lista">
-                        <li class="tags__tag"><a href="{% url 'index_com_categoria' 'NEBULOSA' %}">Nebulosa</a></li>
-                        <li class="tags__tag"><a href="{% url 'index_com_categoria' 'ESTRELA' %}">Estrela</a></li>
-                        <li class="tags__tag"><a href="{% url 'index_com_categoria' 'GALÁXIA' %}">Galáxia</a></li>
-                        <li class="tags__tag"><a href="{% url 'index_com_categoria' 'PLANETA' %}">Planeta</a></li>
+                        <a href="{% url 'index_com_categoria' 'NEBULOSA' %}"><li class="tags__tag">Nebulosa</li></a>
+                        <a href="{% url 'index_com_categoria' 'ESTRELA' %}"><li class="tags__tag">Estrela</li></a>
+                        <a href="{% url 'index_com_categoria' 'GALÁXIA' %}"><li class="tags__tag">Galáxia</li></a>
+                        <a href="{% url 'index_com_categoria' 'PLANETA' %}"><li class="tags__tag">Planeta</li></a>
                     </ul>
                 </section>
                 <section class="galeria">
@@ -35,7 +35,11 @@
                                     <div class="card__texto">
                                         <p class="card__descricao">{{ imagem.legenda }}</p>
                                         <span>
-                                            <a href="{% url 'favoritar' imagem.id %}"><img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração" class="heart"></a>
+                                            {% if imagem.favoritada %}
+                                                <a href="{% url 'favoritar_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/heart-fill.svg' %}" alt="ícone de coração" class="heart"></a>
+                                            {% else %}
+                                                <a href="{% url 'favoritar_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração" class="heart"></a>
+                                            {% endif %}
                                         </span>
                                     </div>
                                 </div>
