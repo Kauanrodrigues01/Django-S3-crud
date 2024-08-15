@@ -17,6 +17,10 @@
                                 <p class="imagem__texto">{{ imagem.descricao }}</p>
                             </div>
                         </div>
+                        <div class="container-buttons-editar-deletar">
+                            <a href="" class="button editar">Editar</a>
+                            <a href="{% url 'deletar_imagem' imagem.id %}" class="button deletar">Deletar imagem</a>
+                        </div>
                     </div>
                 </section>
             </section>

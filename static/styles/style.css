@@ -376,6 +376,8 @@ table {
     width: 100px;
     text-align: center;
     border: 2px solid transparent;
+    color: white;
+    text-decoration: none;
 }
 
 .tags__tag:hover {
@@ -540,4 +542,8 @@ table {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+}
+
+.mt{
+    margin-top: 5px;
 }

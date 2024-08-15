@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 
 class Imagem(models.Model):
     OPCOES_CATEGORIA = [
-        ('NEBULOSA', 'Nebulosa'),
-        ('GALÁXIA', 'Galáxia'),
-        ('PLANETA', 'Planeta'),
-        ('ESTRELA', 'Estrela'),
-        ('OUTRO', 'Outro'),
+        ('NEBULOSA', 'Nebulosa'), # 'NEBULOSA' é o valor que vai ser salvo no banco de dados, 'Nebulosa' é o valor que vai ser exibido no formulário
+        ('GALÁXIA', 'Galáxia'), # 'GALÁXIA' é o valor que vai ser salvo no banco de dados, 'Galáxia' é o valor que vai ser exibido no formulário
+        ('PLANETA', 'Planeta'), # 'PLANETA' é o valor que vai ser salvo no banco de dados, 'Planeta' é o valor que vai ser exibido no formulário
+        ('ESTRELA', 'Estrela'), # 'ESTRELA' é o valor que vai ser salvo no banco de dados, 'Estrela' é o valor que vai ser exibido no formulário
+        ('OUTRO', 'Outro'), # 'OUTRO' é o valor que vai ser salvo no banco de dados, 'Outro' é o valor que vai ser exibido no formulário
     ]
     
     nome = models.CharField(max_length=100, null=False, blank=False)

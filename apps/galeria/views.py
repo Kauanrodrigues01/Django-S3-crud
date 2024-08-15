@@ -7,13 +7,16 @@ from django.contrib import messages
 
 # Create your views here.
 
-def index(request):
+def index(request, categoria=None):
     if not request.user.is_authenticated:
         messages.error(request, 'Você precisa estar logado para acessar essa página')
         return redirect('login')
     
-    # Filtra imagens publicadas do usuário que esta logado no momento
-    imagens = Imagem.objects.filter(user=request.user, publicada=True)
+    if categoria:
+        imagens = Imagem.objects.filter(user=request.user, publicada=True, categoria=categoria)
+    else:
+        # Filtra imagens publicadas do usuário que esta logado no momento
+        imagens = Imagem.objects.filter(user=request.user, publicada=True)
     return render(request, 'galeria/index.html', {'cards': imagens})
 
 def imagem(request, imagem_id):
@@ -30,11 +33,24 @@ def buscar(request):
     
     if 'buscar' in request.GET:
         nome_a_buscar = request.GET['buscar'] # pega o valor do campo de busca, na url
+        nome_a_buscar = nome_a_buscar.strip()
         
-        if nome_a_buscar:
-            imagens = todas_imagens.filter(nome__icontains=nome_a_buscar) | todas_imagens.filter(descricao__icontains=nome_a_buscar) | todas_imagens.filter(categoria__icontains=nome_a_buscar)
-            return render(request, 'galeria/buscar.html', {'cards': imagens})
+        # Verificação se o campo de busca está vazio ou contém apenas espaços em branco
+        if not nome_a_buscar:
+            messages.error(request, 'Digite algo para buscar')
+            return redirect('index')
         
+        # Realiza a busca apenas se houver um termo válido
+        imagens = todas_imagens.filter(
+            nome__icontains=nome_a_buscar
+        ) | todas_imagens.filter(
+            descricao__icontains=nome_a_buscar
+        ) | todas_imagens.filter(
+            categoria__icontains=nome_a_buscar
+        )
+        
+        return render(request, 'galeria/buscar.html', {'cards': imagens})
+    
     return render(request, 'galeria/buscar.html')
 
 def nova_imagem(request):
@@ -57,6 +73,7 @@ def nova_imagem(request):
 def editar_imagem(request, id):
     pass
 
-def deletar_imagem(resquest, id):
-    pass
-
+def deletar_imagem(resquest, imagem_id):
+    imagem = get_object_or_404(Imagem, pk=imagem_id)
+    imagem.delete()
+    return redirect('index')
