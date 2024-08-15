@@ -59,3 +59,4 @@ def editar_imagem(request, id):
 
 def deletar_imagem(resquest, id):
     pass
+
