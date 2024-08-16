@@ -61,4 +61,4 @@ class ImagemForms(forms.ModelForm):
             instance.user = self.user # Salva o usuário no campo 'user' do modelo
         if commit: # Se commit for verdadeiro, salve o formulário no banco de dados
             instance.save() # Salva o formulário no banco de dados
-        return instance
+        return instance 

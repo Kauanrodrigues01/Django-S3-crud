@@ -20,6 +20,10 @@ def index(request, categoria=None):
     return render(request, 'galeria/index.html', {'cards': imagens})
 
 def imagem(request, imagem_id):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Você precisa estar logado para acessar essa página')
+        return redirect('login')
+    
     imagem = get_object_or_404(Imagem, pk=imagem_id)
     return render(request, 'galeria/imagem.html', {'imagem': imagem})
 
@@ -70,10 +74,34 @@ def nova_imagem(request):
         
     return render(request, 'galeria/nova_imagem.html', {'form': form})
     
-def editar_imagem(request, id):
-    pass
+def editar_imagem(request, imagem_id):
+    if not request.user.is_authenticated:
+            messages.error(request, 'Você precisa estar logado para acessar essa página')
+            return redirect('login')
+   
+    imagem = get_object_or_404(Imagem, pk=imagem_id)
+    
+    if request.method == 'POST':
+        form = ImagemForms(request.POST, request.FILES, user=request.user, instance=imagem) # O instance é necessario para que os dados que não foram alterados, não sejam perdidos
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Imagem editada com sucesso')
+            return redirect('index')
+    
+    if imagem:
+        form = ImagemForms(instance=imagem) # instancia o formulário com os dados da imagem que será editada
+        
+        return render(request, 'galeria/editar_imagem.html', {'form': form, 'imagem_id': imagem_id}) # imagem_id é passado para o template, para que posso funcionar pq essa URL precisa de um id, foi definido na urls.py. E tambem para achar a imagem que será editada
+    
+    form = ImagemForms()
+    return render(request, 'galeria/editar_imagem.html', {'form': form, 'imagem_id': imagem_id}) # imagem_id é passado para o template, para que posso funcionar pq essa URL precisa de um id, foi definido na urls.py. E tambem para achar a imagem que será editada
 
-def deletar_imagem(resquest, imagem_id):
+def deletar_imagem(request, imagem_id):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Você precisa estar logado para acessar essa página')
+        return redirect('login')
+    
     imagem = get_object_or_404(Imagem, pk=imagem_id)
     imagem.delete()
     return redirect('index')

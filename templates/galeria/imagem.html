@@ -10,16 +10,18 @@
                         {% else %}
                             <img class="imagem__imagem" src="{{ imagem.caminho_imagem.url }}">
                         {% endif %}
-                        <div class="imagem__info">
-                            <div class="imagem__texto">
-                                <p class="imagem__titulo">{{ imagem.nome }}</p>
-                                <p class="imagem__descricao">{{ imagem.legenda }}</p>
-                                <p class="imagem__texto">{{ imagem.descricao }}</p>
+                        <div class="flex">
+                            <div class="imagem__info">
+                                <div class="imagem__texto">
+                                    <p class="imagem__titulo">{{ imagem.nome }}</p>
+                                    <p class="imagem__descricao">{{ imagem.legenda }}</p>
+                                    <p class="imagem__texto-filho">{{ imagem.descricao }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="container-buttons-editar-deletar">
-                            <a href="" class="button editar">Editar</a>
-                            <a href="{% url 'deletar_imagem' imagem.id %}" class="button deletar">Deletar imagem</a>
+                            <div class="container-buttons">
+                                <a href="{% url 'editar_imagem' imagem.id %}" class="btn-primary">Editar</a>
+                                <a href="{% url 'deletar_imagem' imagem.id %}" class="btn-danger">Deletar imagem</a>
+                            </div>
                         </div>
                     </div>
                 </section>
