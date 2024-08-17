@@ -663,3 +663,7 @@ table {
     gap: 2rem;
     align-items: center;
 }
+
+.span_likes{
+    color: white;
+}

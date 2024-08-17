@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
-from apps.galeria.models import Imagem
+from apps.galeria.models import Imagem, Like, Favoritas
 from apps.galeria.forms import ImagemForms
 
 from django.contrib import messages
@@ -13,11 +13,24 @@ def index(request, categoria=None):
         return redirect('login')
     
     if categoria:
-        imagens = Imagem.objects.filter(user=request.user, publicada=True, categoria=categoria)
+        if categoria == 'FAVORITAS':
+            # Obtenha os IDs das imagens favoritas do usuário
+            imagens_favoritadas_ids = Favoritas.objects.filter(user=request.user).values_list('imagem_id', flat=True)
+            # Filtre as imagens para mostrar apenas aquelas que são favoritas
+            imagens = Imagem.objects.filter(id__in=imagens_favoritadas_ids) # o id__in é um filtro que retorna apenas os objetos cujo id está na lista passada
+        else:
+            imagens = Imagem.objects.filter(publicada=True, categoria=categoria)
     else:
-        # Filtra imagens publicadas do usuário que esta logado no momento
-        imagens = Imagem.objects.filter(user=request.user, publicada=True)
-    return render(request, 'galeria/index.html', {'cards': imagens})
+        imagens = Imagem.objects.filter(publicada=True)
+
+    likes_do_usuario = Like.objects.filter(user=request.user).values_list('imagem_id', flat=True) # values_list('image_id', flat=True) retorna uma lista de IDs de imagens curtidas pelo usuário
+    imagens_favoritadas_do_usuario = Favoritas.objects.filter(user=request.user).values_list('imagem_id', flat=True) # values_list('image_id', flat=True) retorna uma lista de IDs de imagens favoritadas pelo usuário
+    
+    return render(request, 'galeria/index.html', {
+        'cards': imagens,
+        'likes_do_usuario': likes_do_usuario,
+        'imagens_favoritadas_do_usuario': imagens_favoritadas_do_usuario,
+    })
 
 def imagem(request, imagem_id):
     if not request.user.is_authenticated:
@@ -25,7 +38,19 @@ def imagem(request, imagem_id):
         return redirect('login')
     
     imagem = get_object_or_404(Imagem, pk=imagem_id)
-    return render(request, 'galeria/imagem.html', {'imagem': imagem})
+    
+    quantidade_likes = imagem.user_likes.count() # Conta quantos likes a imagem tem
+    
+    imagens_favoritadas_do_usuario = Favoritas.objects.filter(user=request.user).values_list('imagem_id', flat=True) # values_list('image_id', flat=True) retorna uma lista de IDs de imagens favoritadas pelo usuário
+    
+    likes_do_usuario = Like.objects.filter(user=request.user).values_list('imagem_id', flat=True) # values_list('image_id', flat=True) retorna uma lista de IDs de imagens que o usuário deu like
+    
+    return render(request, 'galeria/imagem.html', {
+        'imagem': imagem,
+        'quantidade_likes': quantidade_likes,
+        'imagens_favoritadas_do_usuario': imagens_favoritadas_do_usuario,
+        'likes_do_usuario': likes_do_usuario
+        })
 
 def buscar(request):
     
@@ -112,10 +137,51 @@ def favoritar_imagem(request, imagem_id):
         return redirect('login')
     
     imagem = get_object_or_404(Imagem, pk=imagem_id)
-    if imagem.favoritada:
-        imagem.favoritada = False
-    else:
-        imagem.favoritada = True
+    favorita, created = Favoritas.objects.get_or_create(user=request.user, imagem=imagem)
+    # Se a imagem já foi favoritada, created será False, porque o objeto já existia
+    # Se a imagem ainda não foi favoritada, created será True, porque o objeto foi criado agora
+    
+    if not created:
+        # Se a imagem já foi favoritada, removemos a favorita
+        favorita.delete()
         
+    return redirect('imagem', imagem_id)
+
+def suas_imagens(request, categoria=None):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Você precisa estar logado para acessar essa página')
+        return redirect('login')
+    
+    if categoria:
+        if categoria == 'FAVORITAS':
+            imagens_favoritas_ids = Favoritas.objects.filter(user=request.user).values_list('imagem_id', flat=True)
+            imagens = Imagem.objects.filter(id__in=imagens_favoritas_ids, user=request.user)
+        else:
+            imagens = Imagem.objects.filter(categoria=categoria, publicada=True, user=request.user)
+    else:
+        imagens = Imagem.objects.filter(publicada=True, user=request.user)
+        
+    imagens_favoritadas_do_usuario = Favoritas.objects.filter(user=request.user).values_list('imagem_id', flat=True)
+    
+    return render(request, 'galeria/suas_imagens.html', {'cards': imagens, 'imagens_favoritadas_do_usuario': imagens_favoritadas_do_usuario})
+
+def like_imagem(request, image_id):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Você precisa estar logado para acessar essa página')
+        return redirect('login')
+    
+    imagem = get_object_or_404(Imagem, id=image_id)
+    like, created = Like.objects.get_or_create(user=request.user, imagem=imagem)
+    # Se o like já existir, created será False
+    # Se o like não existir, created será True
+
+    if created:
+        # Incrementa o número de likes se o usuário ainda não tiver curtido a imagem
+        imagem.likes += 1
+    else:
+        # Remove o like e decrementa o número de likes se o usuário já tiver curtido a imagem
+        like.delete()
+        imagem.likes -= 1
+
     imagem.save()
-    return redirect('index')
+    return redirect('imagem', image_id)

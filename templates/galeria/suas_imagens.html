@@ -9,11 +9,11 @@
                 <section class="tags">
                     <p class="tags__titulo">Busque por tags:</p>
                     <ul class="tags__lista">
-                        <a href="{% url 'index_com_categoria' 'NEBULOSA' %}"><li class="tags__tag">Nebulosa</li></a>
-                        <a href="{% url 'index_com_categoria' 'ESTRELA' %}"><li class="tags__tag">Estrela</li></a>
-                        <a href="{% url 'index_com_categoria' 'GALÁXIA' %}"><li class="tags__tag">Galáxia</li></a>
-                        <a href="{% url 'index_com_categoria' 'PLANETA' %}"><li class="tags__tag">Planeta</li></a>
-                        <a href="{% url 'index_com_categoria' 'FAVORITAS' %}"><li class="tags__tag">Favoritas</li></a>
+                        <a href="{% url 'suas_imagens_com_categoria' 'NEBULOSA' %}"><li class="tags__tag">Nebulosa</li></a>
+                        <a href="{% url 'suas_imagens_com_categoria' 'ESTRELA' %}"><li class="tags__tag">Estrela</li></a>
+                        <a href="{% url 'suas_imagens_com_categoria' 'GALÁXIA' %}"><li class="tags__tag">Galáxia</li></a>
+                        <a href="{% url 'suas_imagens_com_categoria' 'PLANETA' %}"><li class="tags__tag">Planeta</li></a>
+                        <a href="{% url 'suas_imagens_com_categoria' 'FAVORITAS' %}"><li class="tags__tag">Favoritas</li></a>
                     </ul>
                 </section>
                 <section class="galeria">
@@ -40,13 +40,6 @@
                                                 <a href="{% url 'favoritar_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/heart-fill.svg' %}" alt="ícone de coração" class="heart"></a>
                                             {% else %}
                                                 <a href="{% url 'favoritar_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/heart_outline.png' %}" alt="ícone de coração" class="heart"></a>
-                                            {% endif %}
-                                        </span>
-                                        <span>
-                                            {% if imagem.id in likes_do_usuario %}
-                                                <a href="{% url 'like_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/liked.png' %}" alt="ícone de like" class="like"></a>
-                                            {% else %}
-                                                <a href="{% url 'like_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/like.png' %}" alt="ícone de like" class="like"></a>
                                             {% endif %}
                                         </span>
                                     </div>

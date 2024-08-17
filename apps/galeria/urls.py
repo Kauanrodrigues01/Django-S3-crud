@@ -13,4 +13,8 @@ urlpatterns = [
     # Feito sozinho
     path('deletar-imagem/<int:imagem_id>', deletar_imagem, name='deletar_imagem'),
     path('favoritar-imagem/<int:imagem_id>', favoritar_imagem, name='favoritar_imagem'),
+    
+    path('suas_imagens', suas_imagens, name='suas_imagens'),
+    path('suas_imagens_com_categoria/<str:categoria>', suas_imagens, name='suas_imagens_com_categoria'),
+    path('like-image/<int:image_id>', like_imagem, name='like_imagem'),
 ]

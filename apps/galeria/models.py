@@ -27,7 +27,30 @@ class Imagem(models.Model):
         blank=False,
         related_name='user',
     )
-    favoritada = models.BooleanField(default=False)
+    likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nome
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagem = models.ForeignKey(Imagem, on_delete=models.CASCADE, related_name='user_likes') # O related_name é o nome que será usado para acessar os likes de uma imagem, quando estivermos acessando a imagem e quisermos pegar os Likes podemos usar: imagem.user_likes.all()
+    liked_at = models.DateTimeField(auto_now_add=True) # Data em que a imagem foi favoritada
+
+    class Meta:
+        unique_together = ('user', 'imagem')  # Para garantir que um usuário só possa curtir uma imagem uma vez
+
+    def __str__(self):
+        return f"{self.user.username} likes {self.image.title}"
+    
+class Favoritas(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_favoritas')
+    imagem = models.ForeignKey(Imagem, on_delete=models.CASCADE, related_name='user_favoritas') # O related_name é o nome que será usado para acessar as imagens favoritas de um usuário, quando estivermos acessando o usuário e quisermos pegar as imagens favoritas podemos usar: imagem.user_favorites.all()
+    favoritada = models.BooleanField(default=False)
+    favoritada_at = models.DateTimeField(auto_now_add=True) # Data em que a imagem foi favoritada
+    
+    class Meta:
+        unique_together = ('user', 'imagem')
+    
+    def __str__(self):
+        return f"{self.user.username} favoritou {self.image.title}"

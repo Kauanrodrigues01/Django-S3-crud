@@ -18,10 +18,42 @@
                                     <p class="imagem__texto-filho">{{ imagem.descricao }}</p>
                                 </div>
                             </div>
-                            <div class="container-buttons">
-                                <a href="{% url 'editar_imagem' imagem.id %}" class="btn-primary">Editar</a>
-                                <a href="{% url 'deletar_imagem' imagem.id %}" class="btn-danger">Deletar imagem</a>
-                            </div>
+                            {% if imagem.id in imagens_favoritadas_do_usuario %}
+                                <span>
+                                    <a href="{% url 'favoritar_imagem' imagem.id %}">
+                                        <img src="{% static '/assets/ícones/1x/heart-fill.svg' %}" alt="ícone de coração" class="heart">
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span>
+                                    <a href="{% url 'favoritar_imagem' imagem.id %}">
+                                        <img src="{% static '/assets/ícones/1x/heart_outline.png' %}" alt="ícone de coração" class="heart">
+                                    </a>
+                                </span>
+                            {% endif %}
+
+                            {% if imagem.id in likes_do_usuario %}
+                                <span class="span_likes">
+                                    <a href="{% url 'like_imagem' imagem.id %}">
+                                        <img src="{% static '/assets/ícones/1x/liked.png' %}" alt="ícone de like" class="like">
+                                    </a> 
+                                    {{ quantidade_likes }} 
+                                </span>
+                            {% else %}
+                                <span class="span_likes">
+                                    <a href="{% url 'like_imagem' imagem.id %}">
+                                        <img src="{% static '/assets/ícones/1x/like.png' %}" alt="ícone de like" class="like">
+                                    </a> 
+                                    {{ quantidade_likes }}
+                                </span>
+                            {% endif %}
+
+                            {% if imagem.user == request.user %}
+                                <div class="container-buttons">
+                                    <a href="{% url 'editar_imagem' imagem.id %}" class="btn-primary">Editar</a>
+                                    <a href="{% url 'deletar_imagem' imagem.id %}" class="btn-danger">Deletar imagem</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </section>
