@@ -72,3 +72,6 @@ def logout(request):
     auth.logout(request) # Função que faz o logout do usuário, ou seja, ele deixa de estar logado
     messages.success(request, 'Deslogado com sucesso!')
     return redirect('login') # Redireciona para a rota chamada 'login'
+
+def perfil(request):
+    return render(request, 'usuarios/perfil.html')
