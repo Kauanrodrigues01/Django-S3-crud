@@ -664,11 +664,13 @@ table {
     align-items: center;
 }
 
-.lazy-load {
-    filter: blur(5px); /* Aplicar um desfoque para indicar carregamento */
-    transition: filter 0.3s ease-in-out;
+.span_likes{
+    color: white;
 }
 
-.lazy-load.loaded {
-    filter: none;
+.card__info  .card__titulo  .card__texto span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 }

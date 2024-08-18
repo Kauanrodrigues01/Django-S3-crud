@@ -41,8 +41,7 @@
                                             {% else %}
                                                 <a href="{% url 'favoritar_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/heart_outline.png' %}" alt="ícone de coração" class="heart"></a>
                                             {% endif %}
-                                        </span>
-                                        <span>
+                                            
                                             {% if imagem.id in likes_do_usuario %}
                                                 <a href="{% url 'like_imagem' imagem.id %}"><img src="{% static '/assets/ícones/1x/liked.png' %}" alt="ícone de like" class="like"></a>
                                             {% else %}
