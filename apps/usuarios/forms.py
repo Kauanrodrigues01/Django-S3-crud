@@ -148,7 +148,3 @@ class CadastroForms(forms.Form):
         
         if senha and confirmar_senha and senha != confirmar_senha:
             self.add_error('confirmar_senha', 'As senhas não são iguais.') # a função add_error adiciona um erro ao campo 'confirmar_senha'
-
-        
-        
-        

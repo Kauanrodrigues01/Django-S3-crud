@@ -684,3 +684,11 @@ table {
     align-items: center;
     gap: 2rem;
 }
+
+.galeria-editar_perfil{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+}

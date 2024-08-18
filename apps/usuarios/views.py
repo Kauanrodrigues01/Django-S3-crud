@@ -74,4 +74,39 @@ def logout(request):
     return redirect('login') # Redireciona para a rota chamada 'login'
 
 def perfil(request):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Tem que estar logado para acessar está página')
+        return redirect('login')
+    
     return render(request, 'usuarios/perfil.html')
+
+def editar_perfil(request):
+    usuario = request.user
+
+    if request.method == 'POST':
+        formCadastro = CadastroForms(request.POST)
+        if formCadastro.is_valid():
+            # Atualize o usuário com os dados do formulário
+            usuario.username = formCadastro.cleaned_data['nome_cadastro'] # cleaned_data é um dicionário que contém os dados do formulário, neste caso, ele pega o valor do campo 'nome_cadastro'
+            usuario.email = formCadastro.cleaned_data['Email']
+            
+            senha = formCadastro.cleaned_data['senha'] 
+            confirmar_senha = formCadastro.cleaned_data['confirmar_senha'] 
+            
+            if senha == confirmar_senha:
+                usuario.set_password(senha)  # set_password é um método do objeto User que criptografa a senha e salva de forma segura no banco de dados
+            else:
+                formCadastro.add_error('confirmar_senha', 'As senhas não são iguais.') # Adiciona um erro ao campo 'confirmar_senha'
+                return render(request, 'usuarios/editar_perfil.html', {'form': formCadastro}) # Retorna o formulário com o erro
+            
+            usuario.save()
+            messages.success(request, 'Perfil atualizado com sucesso!')
+            return redirect('login')
+    else:
+        initial_data = {
+            'nome_cadastro': usuario.username,
+            'Email': usuario.email,
+        }
+        formCadastro = CadastroForms(initial=initial_data)
+
+    return render(request, 'usuarios/editar_perfil.html', {'form': formCadastro})
