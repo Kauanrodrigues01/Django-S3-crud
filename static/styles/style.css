@@ -692,3 +692,9 @@ table {
     align-items: flex-start;
     gap: 1rem;
 }
+
+.item-menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

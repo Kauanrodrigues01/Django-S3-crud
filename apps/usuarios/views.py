@@ -78,7 +78,12 @@ def perfil(request):
         messages.error(request, 'Tem que estar logado para acessar está página')
         return redirect('login')
     
-    return render(request, 'usuarios/perfil.html')
+    nome_usario = request.user.username
+    email_usuario = request.user.email
+    senha = request.user.password
+    senha_usuario = int((len(senha) / 6)) * '*' 
+    
+    return render(request, 'usuarios/perfil.html', {'nome_usario': nome_usario, 'email_usuario': email_usuario, 'senha_usuario': senha_usuario})
 
 def editar_perfil(request):
     usuario = request.user
@@ -87,14 +92,15 @@ def editar_perfil(request):
         formCadastro = CadastroForms(request.POST)
         if formCadastro.is_valid():
             # Atualize o usuário com os dados do formulário
+            
             usuario.username = formCadastro.cleaned_data['nome_cadastro'] # cleaned_data é um dicionário que contém os dados do formulário, neste caso, ele pega o valor do campo 'nome_cadastro'
             usuario.email = formCadastro.cleaned_data['Email']
             
-            senha = formCadastro.cleaned_data['senha'] 
-            confirmar_senha = formCadastro.cleaned_data['confirmar_senha'] 
+            senha = formCadastro.cleaned_data['senha']
+            confirmar_senha = formCadastro.cleaned_data['confirmar_senha']
             
             if senha == confirmar_senha:
-                usuario.set_password(senha)  # set_password é um método do objeto User que criptografa a senha e salva de forma segura no banco de dados
+                usuario.set_password(senha) # set_password é um método do objeto User que criptografa a senha e salva de forma segura no banco de dados
             else:
                 formCadastro.add_error('confirmar_senha', 'As senhas não são iguais.') # Adiciona um erro ao campo 'confirmar_senha'
                 return render(request, 'usuarios/editar_perfil.html', {'form': formCadastro}) # Retorna o formulário com o erro
@@ -102,11 +108,13 @@ def editar_perfil(request):
             usuario.save()
             messages.success(request, 'Perfil atualizado com sucesso!')
             return redirect('login')
+        else:
+            return render(request, 'usuarios/editar_perfil.html', {'form': formCadastro})
     else:
-        initial_data = {
+        initial_data = { # Dicionário com os dados iniciais do formulário
             'nome_cadastro': usuario.username,
             'Email': usuario.email,
         }
-        formCadastro = CadastroForms(initial=initial_data)
+        formCadastro = CadastroForms(initial=initial_data) # Cria o formulário com os dados iniciais
 
     return render(request, 'usuarios/editar_perfil.html', {'form': formCadastro})

@@ -21,23 +21,26 @@
                 <nav class="menu-lateral__navegacao">
                     <a href="{% url 'index' %}"><img src="{% static '/assets/ícones/1x/Home - ativo.png' %}"> Home</a>
                     <a href="{% url 'login' %}"><img src="{% static '/assets/ícones/1x/Mais vistas - inativo.png' %}"> Login</a>
-                    <a href="{% url 'cadastro' %}"><img src="{% static '/assets/ícones/1x/Novas - inativo.png' %}"> Cadastrar</a>
+                    <a href="{% url 'cadastro' %}"><img src="{% static '/assets/ícones/1x/Novas - inativo.png' %}"> Cadastro</a>
                     <a href="{% url 'logout' %}"><img src="{% static '/assets/ícones/1x/Surpreenda-me - inativo.png' %}"> Logout</a>
+                    <a href="{% url 'nova_imagem' %}"><img src="{% static '/assets/ícones/1x/new.png' %}"> Nova imagem</a>
+                    <a href="{% url 'suas_imagens' %}"><img src="{% static '/assets/ícones/1x/vector.png' %}">  Suas imagens</a>
+                    <a href="{% url 'perfil' %}"><img src="{% static '/assets/ícones/1x/Vector-user.png' %}" alt="">Meu Perfil</a>
                 </nav>
             </section>
             <section class="galeria__perfil" style="margin-left: 5em">
                 <div class="container__user">
                     <div class="container__info__user">
-                        <h3 class="title__info">Nome usuário: </h3>
-                        <p>kauan</p>
+                        <h3 class="title__info">Nome de usuário: </h3>
+                        <p>{{ nome_usario }}</p>
                     </div>
                     <div class="container__info__user">
                         <h3 class="title__info">Email:</h3>
-                        <p>kauanrl09@gmail.com</p>
+                        <p>{{ email_usuario }}</p>
                     </div>
                     <div class="container__info__user">
                         <h3 class="title__info">Senha: </h3>
-                        <p>**********</p>
+                        <p>{{ senha_usuario }}</p>
                     </div>
                 </div>
                 <div class="container__button-edit">
