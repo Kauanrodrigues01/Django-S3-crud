@@ -1,4 +1,4 @@
-# Alura Space
+# Alura Space  🌌
 
 AluraSpace é uma aplicação Django desenvolvida para gerenciar e compartilhar imagens. É uma galeria de imagens que permite aos usuários fazer upload, editar, buscar, favoritar e curtir imagens. Além disso, os usuários podem gerenciar seus perfis, visualizar suas imagens e interagir com o conteúdo através de likes e favoritos.
 
