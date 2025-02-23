@@ -37,7 +37,7 @@ Siga estas etapas para configurar o projeto localmente:
 1. **Clone o repositório**
 
     ```bash
-    git clone https://github.com/usuario/nome-do-repositorio.git
+    git clone https://github.com/Kauanrodrigues01/Django-S3-crud.git
     ```
 
 2. **Navegue até o diretório do projeto**
