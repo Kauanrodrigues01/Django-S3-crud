@@ -81,7 +81,6 @@ Siga estas etapas para configurar o projeto localmente:
       ```dotenv
       DEBUG=True
       SECRET_KEY=sua_chave_secreta
-      DATABASE_URL=postgres://usuario:senha@localhost:5432/nome_do_banco
       ```
 
     - **Certifique-se de que o arquivo `.env` está listado no `.gitignore`** para não ser commitado no repositório.
